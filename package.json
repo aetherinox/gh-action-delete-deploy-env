@@ -81,7 +81,7 @@
         "eslint-plugin-github": "^5.1.4",
         "eslint-plugin-prettier": "^5.2.1",
         "@stylistic/eslint-plugin-js": "^2.12.1",
-        "@stylistic/eslint-plugin-ts": "^2.12.1",
+        "@stylistic/eslint-plugin-ts": "^4.2.0",
         "@stylistic/eslint-plugin-plus": "^2.12.1",
         "prettier-eslint": "16.3.0",
         "@vercel/ncc": "^0.34.0",
