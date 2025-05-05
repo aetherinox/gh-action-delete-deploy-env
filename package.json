@@ -74,7 +74,7 @@
         "typescript-eslint": "^8.18.1",
         "@typescript-eslint/parser": "^8.18.1",
         "@typescript-eslint/eslint-plugin": "^8.18.1",
-        "eslint": "^9.17.0",
+        "eslint": "^9.26.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-config-love": "^112.0.0",
         "eslint-plugin-escompat": "^3.11.4",
