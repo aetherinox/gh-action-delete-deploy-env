@@ -2,7 +2,7 @@ name: 'Delete Deployment Environments'
 description: 'Delete repo or branch environment and deployment history'
 author: "Aetherinox"
 branding:
-    icon: 'terminal'
+    icon: 'archive'
     color: 'red'
 
 inputs:
