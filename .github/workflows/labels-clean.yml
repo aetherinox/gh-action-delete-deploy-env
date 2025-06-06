@@ -202,6 +202,7 @@ jobs:
                       const response = await github.rest.issues.listLabelsForRepo({
                           owner: targetOwner,
                           repo: targetRepo,
+                          per_page: 100
                       });
                       console.log("Labels fetched: ", response.data);
 
@@ -209,12 +210,6 @@ jobs:
                       if (labels.length === 0) {
                           console.log("No labels found in the source repository.");
                       }
-
-                      // Fetch all labels from the target repository and delete them
-                      const existingLabels = await github.rest.issues.listLabelsForRepo({
-                          owner: targetOwner,
-                          repo: targetRepo,
-                      });
 
                       // const labels = JSON.parse( process.env.LABELS_JSON );
                       let result = Object.keys(labels).length;
@@ -235,7 +230,7 @@ jobs:
                           }
                       }
 
-                      console.log("[Success]: Added " + result + " labels to repo");
+                      console.log("[Success]: Added " + result + " Removed to repo");
 
                       return result
 
