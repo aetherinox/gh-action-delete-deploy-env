@@ -94,6 +94,7 @@ they are deployed to. Action  will find and mark all deployments as `inactive` a
 <br />
 
 ### Obtain A Token
+
 For certain operations _(like deleting an environment)_, your GitHub Action will need additional permissions that the default `github.token` simply doesn't have.
 
 <br />
@@ -144,7 +145,7 @@ In this case, a [GitHub App](https://docs.github.com/en/developers/apps/getting-
              private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
          - name: 🗑 Delete deployment environment
-           uses: Aetherinox/delete-deploy-env-action@v2.2.3
+           uses: Aetherinox/delete-deploy-env-action@v3
            with:
              # Use a JWT created with your GitHub App's private key
              token: ${{ steps.get-token.outputs.token }}
@@ -177,11 +178,13 @@ In this case, a [GitHub App](https://docs.github.com/en/developers/apps/getting-
 <br />
 
 ## Usage
+
 To use this workflow, view the following examples below:
 
 <br />
 
 ### Deactivate / Remove Deployment Environment (also from settings)
+
 The example below will be triggered on a delete event.
 - ✔️ Deactivates deployment
 - ✔️ Removes from deployments tab
@@ -486,6 +489,7 @@ curl -I -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <Y
 <br />
 
 You will see:
+
 ```console
 x-github-api-version-selected: 2022-11-28
 X-RateLimit-Limit: 10000
@@ -504,6 +508,7 @@ X-RateLimit-Resource: core
 <br />
 
 ## Build & Release
+
 To build a new copy of this workflow for development:
 
 <br />
@@ -517,6 +522,7 @@ npm install
 <br />
 
 ### New Github Release
+
 To push a new release, first run eslint locally to check for issues
 ```shell
 npm run lint
@@ -543,6 +549,7 @@ Once you run the publish workflow, a second workflow will be ran: `.github\workf
 <br />
 
 #### Call With Version Number
+
 This example shows how to use the workflow using the version number:
 
 ```yml
