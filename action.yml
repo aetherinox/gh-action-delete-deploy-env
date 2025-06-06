@@ -1,5 +1,5 @@
 name: 'Delete Deployment Environments'
-description: 'Delete entire environments and deployments for the branch the action is running on'
+description: 'Delete repo or branch environment and deployment history'
 author: "Aetherinox"
 branding:
     icon: 'terminal'
