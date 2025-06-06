@@ -230,7 +230,7 @@ jobs:
                           }
                       }
 
-                      console.log("[Success]: Added " + result + " Removed to repo");
+                      console.log("[Success]: Deleted " + result + " labels from repo");
 
                       return result
 
