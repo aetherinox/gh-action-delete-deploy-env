@@ -1,3 +1,2 @@
-import { main } from './execute'
-
-main()
+import { main } from './execute';
+main();
