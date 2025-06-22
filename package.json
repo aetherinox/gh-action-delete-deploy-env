@@ -1,12 +1,12 @@
 {
     "name": "delete-deployment-environment",
-    "version": "3.0.1",
-    "description": "Remove an environment and it's deployments",
+    "version": "3.1.0",
+    "description": "Remove github repo environments and their deployments",
     "author": "Aetherinox",
     "license": "MIT",
     "main": "lib/main.js",
     "build": {
-        "appId": "com.delete-deploy-env-action.id"
+        "appId": "com.gh-action-delete-deploy-env.id"
     },
     "funding": [
         {
@@ -15,11 +15,11 @@
         }
     ],
     "bugs": {
-        "url": "https://github.com/Aetherinox/delete-deploy-env-action/issues"
+        "url": "https://github.com/Aetherinox/gh-action-delete-deploy-env/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Aetherinox/delete-deploy-env-action.git"
+        "url": "https://github.com/Aetherinox/gh-action-delete-deploy-env.git"
     },
     "contributors": [
         {
@@ -36,20 +36,17 @@
     "scripts": {
         "build": "tsc",
         "test": "ava --verbose",
-        "lint": "eslint src/**/*.ts",
+        "lint": "eslint",
         "lint:fix": "eslint --fix src/**/*.ts",
-        "pretty": "prettier . --check",
-        "pretty:fix": "prettier . --write",
-        "pretty:ignore": "prettier . --write --ignore-unknown",
+        "pack": "ncc build",
         "contrib:add": "all-contributors add",
         "contrib:generate": "all-contributors generate",
-        "pack": "ncc build",
-        "root": "node root.js",
-        "root:generate": "node root.js generate",
-        "env:root": "npx --quiet env-cmd --no-override node root.js",
-        "env:uuid": "npx --quiet env-cmd --no-override node root.js uuid",
-        "env:guid": "npx --quiet env-cmd --no-override node root.js guid",
-        "env:version": "node -p require('./package.json').version;"
+        "root": "node root.mjs",
+        "root:generate": "node root.mjs generate",
+        "root:root": "npx --quiet env-cmd --no-override node root.mjs",
+        "root:uuid": "npx --quiet env-cmd --no-override node root.mjs uuid",
+        "root:guid": "npx --quiet env-cmd --no-override node root.mjs guid",
+        "root:version": "node -p require('./package.json').version;"
     },
     "keywords": [
         "cloudflare",
@@ -61,46 +58,36 @@
     ],
     "dependencies": {
         "@actions/core": "^1.11.1",
-        "@actions/github": "^5.1.1"
+        "@actions/github": "^6.0.1"
     },
     "devDependencies": {
         "@types/uuid": "^10.0.0",
-        "uuid": "^10.0.0",
-        "@aetherinox/noxenv": "^1.0.0",
-        "@octokit/core": "^4.2.4",
-        "@octokit/request-error": "^3.0.3",
-        "@octokit/types": "^7.5.1",
+        "uuid": "^11.1.0",
+        "@aetherinox/noxenv": "^1.1.1",
+        "@octokit/core": "^5.2.1",
+        "@octokit/request-error": "^7.0.0",
+        "@octokit/types": "^10.0.0",
         "@types/node": "^20.11.10",
-        "typescript-eslint": "^8.18.1",
-        "@typescript-eslint/parser": "^8.18.1",
-        "@typescript-eslint/eslint-plugin": "^8.18.1",
-        "eslint": "^9.28.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-config-love": "^112.0.0",
+        "typescript-eslint": "^8.34.1",
+        "@typescript-eslint/parser": "^8.34.1",
+        "@typescript-eslint/eslint-plugin": "^8.34.1",
+        "eslint": "^9.29.0",
+        "eslint-config-love": "^121.0.0",
         "eslint-plugin-escompat": "^3.11.4",
-        "eslint-plugin-github": "^5.1.4",
-        "eslint-plugin-prettier": "^5.2.1",
-        "@stylistic/eslint-plugin-js": "^2.12.1",
-        "@stylistic/eslint-plugin-ts": "^2.12.1",
-        "@stylistic/eslint-plugin-plus": "^2.12.1",
-        "prettier-eslint": "16.3.0",
+        "eslint-plugin-github": "^6.0.0",
+        "@stylistic/eslint-plugin": "^4.4.1",
         "@vercel/ncc": "^0.38.3",
-        "ava": "^4.3.3",
-        "husky": "^4.3.8",
-        "lint-staged": "^15.2.0",
+        "ava": "^6.4.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.1.2",
         "ts-node": "^10.9.2",
-        "typescript": "^4.9.5",
+        "typescript": "^5.8.3",
         "yaml-lint": "^1.7.0",
-        "all-contributors-cli": "^6.26.1",
-        "prettier": "^3.4.2"
+        "all-contributors-cli": "^6.26.1"
     },
     "lint-staged": {
         "*.ts": [
-            "eslint --fix",
-            "prettier --config .prettierrc --write"
-        ],
-        "*.*": [
-            "prettier --config .prettierrc --write"
+            "eslint --fix"
         ]
     },
     "ava": {

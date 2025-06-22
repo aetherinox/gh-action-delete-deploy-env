@@ -11,5 +11,7 @@
     "rootDir": "src",
     "moduleResolution": "node",
   },
-  "exclude": ["node_modules", "__tests__/*.test.ts"],
+  "exclude": [
+    "node_modules", "__tests__/*.test.ts"
+  ]
 }
