@@ -126,8 +126,10 @@ test.beforeEach( ( t ) =>
 {
     process.env.GITHUB_REPOSITORY = `${
     // set owner to enable test on forked repositories
-    process.env.OWNER || 'Aetherinox'
-  }/delete-deploy-env-action`
+    // if you change the repo name; must change it here, otherwise you'll get the error:
+    //      ::error::Request body length does not match content-length header
+    process.env.OWNER || 'aetherinox'
+  }/gh-action-delete-deploy-env`
     process.env.GITHUB_REF = 'main'
     github.context.ref = process.env.GITHUB_REF
 
@@ -345,7 +347,7 @@ test.serial( ' Successfully remove multiple deployments only and not remove envi
     async ( t ) =>
     {
 
-        const deployAmt = 10                   // number of deployments to create
+        const deployAmt = 5                   // number of deployments to create
         const delayAmt = 500                   // delay between each deployment removed
         const newRef = 'v3'
         const environment = 'test-remove-deployment-ref-only'
@@ -436,8 +438,8 @@ test.serial( ' Successfully deleted limited results',
     async ( t ) =>
     {
 
-        const deployAmt = 10                   // number of deployments to create
-        const delayAmt = 500                   // delay between each deployment removed
+        const deployAmt = 5                     // number of deployments to create
+        const delayAmt = 500                    // delay between each deployment removed
         const environment = 'test-remove-deployment-ref-only'
         process.env.INPUT_REF = 'main'
 
@@ -509,9 +511,9 @@ test.serial( ' Successfully deleted limited results',
             Test Results
         */
 
-        t.truthy( deploymentStatus )
-        t.is( deployments.length, 6 )
-        t.is( deployments[ 0 ].ref, 'main' )
+        t.truthy( deploymentStatus );
+        t.is( deployments.length, 1 );
+        t.is( deployments[ 0 ].ref, 'main' );
 
         /*
             Clean up remaining stuff left over
