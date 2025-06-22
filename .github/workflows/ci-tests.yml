@@ -110,14 +110,6 @@ jobs:
                   echo "VERSION: ${{ steps.task_initialize_package_version.outputs.PACKAGE_VERSION }}"
 
             # #
-            #   [ CI ] Pretty
-            # #
-
-            #- name: "📦 NPM › Prettier"
-            #  id: task_npmtest_npm_prettier
-            #  run: npm run pretty:fix
-
-            # #
             #   [ CI ] Lint
             # #
 
@@ -162,7 +154,7 @@ jobs:
               id: task_npmtest_npm_test
               run: npm run test
               env:
-                  GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ env.SELF_TOKEN_CL }}
 
             # #
             #   [ CI ] Create Github Deployment
@@ -172,7 +164,7 @@ jobs:
               id: task_npmtest_gh_deployment_create
               uses: chrnorm/deployment-action@v2
               with:
-                  token: ${{ env.GITHUB_TOKEN }}
+                  token: ${{ env.SELF_TOKEN_CL }}
                   environment: test
                   initial-status: success
 
@@ -184,5 +176,5 @@ jobs:
               id: task_npmtest_gh_deployment_delete
               uses: ./
               with:
-                  token: ${{ env.GITHUB_TOKEN }}
+                  token: ${{ env.SELF_TOKEN_CL }}
                   environment: test
