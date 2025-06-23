@@ -320,7 +320,7 @@ jobs:
         steps:
           - name: >-
               ⚙️ Deployments › Clean
-            uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
+            uses: aetherinox/gh-action-delete-deploy-env@v3
             with:
               token: ${{ secrets.GITHUB_TOKEN }}
               environment: orion
@@ -344,7 +344,7 @@ jobs:
         steps:
           - name: >-
               ⚙️ Deployments › Clean
-            uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
+            uses: aetherinox/gh-action-delete-deploy-env@v3
             with:
               token: ${{ secrets.GITHUB_TOKEN }}
               environment: orion
@@ -365,7 +365,7 @@ jobs:
         steps:
           - name: >-
               ⚙️ Deployments › Clean
-            uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
+            uses: aetherinox/gh-action-delete-deploy-env@v3
             with:
               token: ${{ secrets.GITHUB_TOKEN }}
               environment: orion
