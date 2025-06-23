@@ -1,10 +1,39 @@
 # #
 #   @type               github workflow
-#   @desc               publishes a new release of the gh-action-delete-deploy-env
-#                           - .github\workflows\release-publish-tag-latest.yml
-#                       this ensures your tag @latest always links to the most recent release
 #   @author             Aetherinox
 #   @url                https://github.com/Aetherinox
+#   @usage              releases a new version of the project
+#
+#   @secrets            secrets.SELF_TOKEN                                          self github personal access token (fine-grained)
+#                       secrets.SELF_TOKEN_CL                                       self github personal access token (classic)
+#                       secrets.NPM_TOKEN                                           self npmjs access token
+#                       secrets.PYPI_API_TOKEN                                      self Pypi API token (production site) - https://pypi.org/
+#                       secrets.PYPI_API_TEST_TOKEN                                 self Pypi API token (test site) - https://test.pypi.org/
+#                       secrets.SELF_DOCKERHUB_TOKEN                                self Dockerhub token
+#                       secrets.CODECOV_TOKEN                                       codecov upload token for nodejs projects
+#                       secrets.MAXMIND_GELITE_TOKEN                                maxmind API token
+#                       secrets.CF_ACCOUNT_ID                                       cloudflare account id
+#                       secrets.CF_ACCOUNT_TOKEN                                    cloudflare account token
+#                       secrets.ORG_TOKEN                                           org github personal access token (fine-grained)
+#                       secrets.ORG_TOKEN_CL                                        org github personal access token (classic)
+#                       secrets.ORG_DOCKERHUB_TOKEN                                 org dockerhub secret
+#                       secrets.ORG_GITEA_TOKEN                                     org gitea personal access token (classic) with package:write permission
+#                       secrets.BOT_GPG_KEY_ASC                                     bot gpg private key (armored) | BEGIN PGP PRIVATE KEY BLOCK
+#                       secrets.BOT_GPG_KEY_B64                                     bot gpg private key (binary) converted to base64
+#                       secrets.BOT_GPG_PASSPHRASE                                  bot gpg private key passphrase
+#                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_RELEASES                discord webhook to report release notifications from github to discord
+#                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_WORKFLOWS               discord webhook to report workflow notifications from github to discord
+#                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_UPDATES                 discord webhook to report activity notifications from github to discord
+#
+#
+#   @local              these workflows can be tested locally through the use of `act`
+#                           https://github.com/nektos/act
+#                       Extract act to folder
+#                       Add system env var with path to act.exe
+#                       Run the commands:
+#                           git pull https://github.com/username/repo
+#                           act -W .github/workflows/release-publish.yml -P ubuntu-latest=catthehacker/ubuntu:full-22.04
+#                           act -W .github/workflows/release-publish.yml -s TOKEN_CL=XXXXXXXXXX --pull=false
 # #
 
 name: '📦 Release › Publish'
@@ -238,7 +267,7 @@ jobs:
 
             - name: '👁️‍🗨️ Package Version › Set'
               id: task_initialize_package_getversion
-              working-directory: ./tvapp2
+              working-directory: ./
               run: |
                   VER=$(cat package.json | jq -r '.version')
                   echo "PACKAGE_VERSION=$VER" >> $GITHUB_OUTPUT
@@ -659,7 +688,7 @@ jobs:
                   fetchViaCommits: true
                   configurationJson: |
                     {
-                      "template": "## Release Info \n| Item | Value |\n| --- | --- |\n|<sub>📄 ${{ env.FILE_ZIP }}</sub>|<sub>Contains TVApp2 node source code and Docker build kit</sub>|\n|<sub>🏷️ SHA256</sub>|<sub>`${{ env.SHA256SUM }}`</sub>|\n|<sub>🏷️ GUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.GUID }}`</sub>|\n|<sub>🏷️ UUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.UUID }}`</sub>|\n|<sub>🕟 Stamp</sub>|<sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>|\n|<sub>📅 Last Release</sub>|<sub>`#{{DAYS_SINCE}} days ago`</sub>|\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a> : <b>#{{CHANGED_FILES}}</b></li><li>Changes : <b>#{{CHANGES}}</b></li><li>Commits : <b>#{{COMMITS}}</b></li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li><li>PRs (categorized) : <b>#{{CATEGORIZED_COUNT}}</b></li><li>PRs (uncategorized) : <b>#{{UNCATEGORIZED_COUNT}}</b></li><li>PRs (open) : <b>#{{OPEN_COUNT}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
+                      "template": "## Release Info \n| Item | Value |\n| --- | --- |\n|<sub>📄 ${{ env.FILE_ZIP }}</sub>|<sub>Contains built github action</sub>|\n|<sub>🏷️ SHA256</sub>|<sub>`${{ env.SHA256SUM }}`</sub>|\n|<sub>🏷️ GUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.GUID }}`</sub>|\n|<sub>🏷️ UUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.UUID }}`</sub>|\n|<sub>🕟 Stamp</sub>|<sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>|\n|<sub>📅 Last Release</sub>|<sub>`#{{DAYS_SINCE}} days ago`</sub>|\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a> : <b>#{{CHANGED_FILES}}</b></li><li>Changes : <b>#{{CHANGES}}</b></li><li>Commits : <b>#{{COMMITS}}</b></li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li><li>PRs (categorized) : <b>#{{CATEGORIZED_COUNT}}</b></li><li>PRs (uncategorized) : <b>#{{UNCATEGORIZED_COUNT}}</b></li><li>PRs (open) : <b>#{{OPEN_COUNT}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n---\n\n<br>\n\n"
                     }
               env:
                   GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
@@ -695,7 +724,7 @@ jobs:
                   fetchViaCommits: true
                   configurationJson: |
                     {
-                      "template": "## Release Info \n| Item | Value |\n| --- | --- |\n|<sub>📄 ${{ env.FILE_ZIP }}</sub>|<sub>Contains TVApp2 node source code and Docker build kit</sub>|\n|<sub>🏷️ SHA256</sub>|<sub>`${{ env.SHA256SUM }}`</sub>|\n|<sub>🏷️ GUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.GUID }}`</sub>|\n|<sub>🏷️ UUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.UUID }}`</sub>|\n|<sub>🕟 Stamp</sub>|<sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>|\n|<sub>📅 Last Release</sub>|<sub>`#{{DAYS_SINCE}} days ago`</sub>|\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a> : <b>#{{CHANGED_FILES}}</b></li><li>Changes : <b>#{{CHANGES}}</b></li><li>Commits : <b>#{{COMMITS}}</b></li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li><li>PRs (categorized) : <b>#{{CATEGORIZED_COUNT}}</b></li><li>PRs (uncategorized) : <b>#{{UNCATEGORIZED_COUNT}}</b></li><li>PRs (open) : <b>#{{OPEN_COUNT}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Commits (#{{UNCATEGORIZED_COUNT}})\nThe following commits are uncategorized:\n#{{UNCATEGORIZED}}\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n"
+                      "template": "## Release Info \n| Item | Value |\n| --- | --- |\n|<sub>📄 ${{ env.FILE_ZIP }}</sub>|<sub>Contains built github action</sub>|\n|<sub>🏷️ SHA256</sub>|<sub>`${{ env.SHA256SUM }}`</sub>|\n|<sub>🏷️ GUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.GUID }}`</sub>|\n|<sub>🏷️ UUID</sub>|<sub>`${{ steps.task_release_dotenv_get.outputs.UUID }}`</sub>|\n|<sub>🕟 Stamp</sub>|<sub>`#{{FROM_TAG}}-#{{FROM_TAG_DATE}} 🔺 #{{TO_TAG}}-#{{TO_TAG_DATE}}`</sub>|\n|<sub>📅 Last Release</sub>|<sub>`#{{DAYS_SINCE}} days ago`</sub>|\n\n<br>\n\n---\n\n<br>\n\n### What's New\nThis release contains the following changes:\n\n<br>\n\n---\n\n<br>\n\n### Statistics\nHow the files have changed:\n<ul><li><a href='#{{RELEASE_DIFF}}'>Changed files</a> : <b>#{{CHANGED_FILES}}</b></li><li>Changes : <b>#{{CHANGES}}</b></li><li>Commits : <b>#{{COMMITS}}</b></li><li>Additions : <b>#{{ADDITIONS}}</b></li><li>Deletions : <b>#{{DELETIONS}}</b></li><li>PRs (categorized) : <b>#{{CATEGORIZED_COUNT}}</b></li><li>PRs (uncategorized) : <b>#{{UNCATEGORIZED_COUNT}}</b></li><li>PRs (open) : <b>#{{OPEN_COUNT}}</b></li>\n<br />\n</ul>\n\n<br>\n\n---\n\n<br>\n\n### Commits (#{{UNCATEGORIZED_COUNT}})\nThe following commits are uncategorized:\n#{{UNCATEGORIZED}}\n\n<br>\n\n---\n\n<br>\n\n### Pull Requests\nThis release is associated with the following pull requests:\n#{{CHANGELOG}}\n\n<br>\n\n"
                     }
               env:
                   GITHUB_TOKEN: ${{ secrets.ADMINSERV_TOKEN }}
@@ -1100,7 +1129,7 @@ jobs:
                   echo "| 🕛 **Deploy Time**              | ${{ env.NOW }}                |" >> $GITHUB_STEP_SUMMARY
                   echo ""
                   echo "### 📄 File (${{ env.FILE_STABLE }})                              " >> $GITHUB_STEP_SUMMARY
-                  echo "This is the main release. It contains all required docker files, and the TVApp2 `package.json`" >> $GITHUB_STEP_SUMMARY
+                  echo "This is the main release. `package.json`" >> $GITHUB_STEP_SUMMARY
                   echo "| File                            | Result                        |" >> $GITHUB_STEP_SUMMARY
                   echo "| ------------------------------- | -----------------------       |" >> $GITHUB_STEP_SUMMARY
                   echo "| 🏷️ **SHA256**                   | ${{ env.SHA_STABLE }}         |" >> $GITHUB_STEP_SUMMARY
