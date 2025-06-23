@@ -6,7 +6,7 @@
 
 <p>
 
-This github action allows you to delete environments, as well as delete your deployment history. Deployments can be deleted in their totality, or you can target a specific number of deployments to erase.
+This github action allows you to delete environments, as well as delete your deployment history. Deployments can be deleted in their totality, or you can target a specific number of deployments to erase. Contains extra functionality to mitigate the Github API's rate limits.
 
 </p>
 
@@ -48,11 +48,6 @@ This github action allows you to delete environments, as well as delete your dep
   - [Avoid Secondary Rate Limiting](#avoid-secondary-rate-limiting)
   - [Limit Deployments Removed](#limit-deployments-removed)
 - [Rate Limits](#rate-limits)
-- [Build \& Release](#build--release)
-  - [Install](#install)
-  - [New Github Release](#new-github-release)
-    - [Call With Version Number](#call-with-version-number)
-    - [Call With Latest Tag](#call-with-latest-tag)
 - [Contributors ✨](#contributors-)
 
 
@@ -145,7 +140,7 @@ In this case, a [GitHub App](https://docs.github.com/en/developers/apps/getting-
              private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
 
          - name: 🗑 Delete deployment environment
-           uses: Aetherinox/delete-deploy-env-action@v3
+           uses: Aetherinox/gh-action-delete-deploy-env@v2.2.3
            with:
              # Use a JWT created with your GitHub App's private key
              token: ${{ steps.get-token.outputs.token }}
@@ -160,6 +155,10 @@ In this case, a [GitHub App](https://docs.github.com/en/developers/apps/getting-
 <br />
 
 ## Inputs
+
+The following inputs can be specified when you use this Github action:
+
+<br />
 
 | name                        | description                                                                             |
 | --------------------------- | --------------------------------------------------------------------------------------- |
@@ -178,13 +177,12 @@ In this case, a [GitHub App](https://docs.github.com/en/developers/apps/getting-
 <br />
 
 ## Usage
-
 To use this workflow, view the following examples below:
 
 <br />
+<br />
 
 ### Deactivate / Remove Deployment Environment (also from settings)
-
 The example below will be triggered on a delete event.
 - ✔️ Deactivates deployment
 - ✔️ Removes from deployments tab
@@ -204,13 +202,14 @@ jobs:
   delete:
     runs-on: ubuntu-latest
     steps:
-      - uses: Aetherinox/delete-deploy-env-action@v2
+      - uses: Aetherinox/gh-action-delete-deploy-env@v2
         with:
           # ⚠️ The provided token needs permission for admin write:org
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: my-environment-name
 ```
 
+<br />
 <br />
 
 ### Deactivate / Remove Deployment Environment
@@ -233,13 +232,14 @@ jobs:
   delete:
     runs-on: ubuntu-latest
     steps:
-      - uses: Aetherinox/delete-deploy-env-action@v2
+      - uses: Aetherinox/gh-action-delete-deploy-env@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: my-environment-name
           onlyRemoveDeployments: true
 ```
 
+<br />
 <br />
 
 ### Deactivates and removes a deployment ref of a given environment
@@ -265,7 +265,7 @@ jobs:
   delete:
     runs-on: ubuntu-latest
     steps:
-      - uses: Aetherinox/delete-deploy-env-action@v2
+      - uses: Aetherinox/gh-action-delete-deploy-env@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: my-environment-name
@@ -273,6 +273,7 @@ jobs:
           onlyRemoveDeployments: true
 ```
 
+<br />
 <br />
 
 ### Deactivates deployment environment
@@ -295,7 +296,7 @@ jobs:
   delete:
     runs-on: ubuntu-latest
     steps:
-      - uses: Aetherinox/delete-deploy-env-action@v2
+      - uses: Aetherinox/gh-action-delete-deploy-env@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: my-environment-name
@@ -303,9 +304,12 @@ jobs:
 ```
 
 <br />
+<br />
 
 ### Avoid Secondary Rate Limiting
-No more than 100 concurrent requests are allowed. and mo more than 900 points per minute are allowed for REST API endpoints. This limit is shared across the Github REST API and GraphQL API. To handle this rate limiting issue, we've implemented a delay that be specified within your workflow. In the example below, we add the property `delay`, and set it to `500 milliseconds`.  This means that if you have a large number of deployments you wish to erase, it will take longer than a minute, but you can easily walk away and the workflow will complete successfully without throwing a **Secondary rate limit** error.
+No more than 100 concurrent requests are allowed. and mo more than 900 points per minute are allowed for REST API endpoints. This limit is shared across the Github REST API and GraphQL API. To handle this rate limit; we've implemented a delay that be specified within your workflow.
+
+In the example below, we add the property `delay`, and set it to `500 milliseconds`.  This means that if you have a large number of deployments you wish to erase, it will take longer than a minute, but you can easily walk away and the workflow will complete successfully without throwing a **Secondary rate limit** error.
 
 ```yml
 jobs:
@@ -316,7 +320,7 @@ jobs:
         steps:
           - name: >-
               ⚙️ Deployments › Clean
-            uses: Aetherinox/delete-deploy-env-action@v3.0.0
+            uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
             with:
               token: ${{ secrets.GITHUB_TOKEN }}
               environment: orion
@@ -325,8 +329,10 @@ jobs:
 ```
 
 <br />
+<br />
 
 ### Limit Deployments Removed
+
 You may specify a custom value to represent how many deployments you want to remove from your deployment history. The default value is `100` which is the max that is allowed by the Github REST API. The following example will delete **43** deployments from your history:
 
 ```yml
@@ -338,7 +344,7 @@ jobs:
         steps:
           - name: >-
               ⚙️ Deployments › Clean
-            uses: Aetherinox/delete-deploy-env-action@v3.0.0
+            uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
             with:
               token: ${{ secrets.GITHUB_TOKEN }}
               environment: orion
@@ -359,7 +365,7 @@ jobs:
         steps:
           - name: >-
               ⚙️ Deployments › Clean
-            uses: Aetherinox/delete-deploy-env-action@v3.0.0
+            uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
             with:
               token: ${{ secrets.GITHUB_TOKEN }}
               environment: orion
@@ -375,7 +381,10 @@ jobs:
 <br />
 
 ## Rate Limits
-Remember that Github has implemented rate limits on how many actions you can perform. If you would like to see your current limits, open up a Command Prompt / Terminal, and run the following CURL command. Replace `<YOUR-TOKEN>` with your Github API token.
+
+Remember that Github has implemented rate limits on how many actions you can perform. If you would like to see your current limits, open up a Command Prompt / Terminal, and run the following CURL command. 
+
+Replace `<YOUR-TOKEN>` with your Github API token.
 
 ```
 curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <YOUR-TOKEN>" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/rate_limit
@@ -473,14 +482,25 @@ You should see the following:
 
 To see your rate limit for mangaging your repo environment and deleting deployments with tools such as this Github action, view the `core` object.
 
+```json
+    "core": {
+      "limit": 10000,
+      "used": 27,
+      "remaining": 9973,
+      "reset": 1729024173
+    },
+```
+
 <br />
 
 > [!NOTE]
-> The `rate` object is deprecated. If you're writing new API client code or updating existing code, you should use the `core` object instead of the rate object. The `core` object contains the same information that is present in the rate object.
+> Originally, Github used the `rate` object to show your rate limit statistics; however it is now deprecated. If you're writing new API client code or updating existing code, you should use the `core` object instead of the rate object. The `core` object contains the same information that is present in the rate object.
 
 <br />
 
-You may also see your rate limit by accessing the Github REST API and calling the headers for your repo. Replace `<YOUR-TOKEN>` with your Github API token:
+You may also see your rate limit by accessing the Github REST API and calling the headers for your repo. 
+
+Replace `<YOUR-TOKEN>` with your Github API token:
 
 ```shell
 curl -I -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <YOUR-TOKEN>" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/OWNER/REPO/environments/ENVIRONMENT_NAME
@@ -489,7 +509,6 @@ curl -I -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer <Y
 <br />
 
 You will see:
-
 ```console
 x-github-api-version-selected: 2022-11-28
 X-RateLimit-Limit: 10000
@@ -501,95 +520,7 @@ X-RateLimit-Resource: core
 
 <br />
 
-<br />
 
----
-
-<br />
-
-## Build & Release
-
-To build a new copy of this workflow for development:
-
-<br />
-
-### Install
-
-```shell
-npm install
-```
-
-<br />
-
-### New Github Release
-
-To push a new release, first run eslint locally to check for issues
-```shell
-npm run lint
-```
-
-<br />
-
-Then open the `package.json` and bump the version. Then push the updated `package.json` file to the repo:
-```json
-{
-    "name": "delete-deployment-environment",
-    "version": "3.0.1",
-}
-```
-
-<br />
-
-Run the workflow `release-publish.yml` from https://github.com/Aetherinox/delete-deploy-env-action/actions.
-
-<br />
-
-Once you run the publish workflow, a second workflow will be ran: `.github\workflows\release-publish-tag-latest.yml`. This will create an additional new release with the tag `latest` so that you can use the workflow in your .yml file under the `latest` tag:
-
-<br />
-
-#### Call With Version Number
-
-This example shows how to use the workflow using the version number:
-
-```yml
-jobs:
-    cleanup:
-        runs-on: ubuntu-latest
-        permissions: write-all
-  
-        steps:
-            - name: >-
-                ⚙️ Deployments › Clean
-              uses: Aetherinox/delete-deploy-env-action@v3.0.0
-              with:
-                  token: ${{ secrets.SELF_TOKEN_CL }}
-                  environment: orion
-                  onlyRemoveDeployments: true
-                  delay: "1000"
-```
-
-<br />
-
-#### Call With Latest Tag
-This example shows how to use the workflow using the `latest` tag:
-
-```yml
-jobs:
-    cleanup:
-        runs-on: ubuntu-latest
-        permissions: write-all
-  
-        steps:
-            - name: >-
-                ⚙️ Deployments › Clean
-              uses: Aetherinox/delete-deploy-env-action@latest
-              with:
-                  token: ${{ secrets.SELF_TOKEN_CL }}
-                  environment: orion
-                  onlyRemoveDeployments: true
-                  delay: "1000"
-```
 
 <br />
 
@@ -606,7 +537,7 @@ We are always looking for contributors. If you feel that you can provide somethi
 <br />
 
 Want to help but can't write code?
-- Review [active questions by our community](https://github.com/Aetherinox/delete-deploy-env-action/labels/help%20wanted) and answer the ones you know.
+- Review [active questions by our community](https://github.com/Aetherinox/gh-action-delete-deploy-env/labels/help%20wanted) and answer the ones you know.
 
 <br />
 
@@ -630,7 +561,7 @@ The following people have helped get this project going:
 <table>
     <tbody>
         <tr>
-            <td align="center" valign="top"><a href="https://gitlab.com/Aetherinox"><img src="https://avatars.githubusercontent.com/u/118329232?v=4?s=40" width="80px;" alt="Aetherinox"/><br /><sub><b>Aetherinox</b></sub></a><br /><a href="https://github.com/Aetherinox/delete-deploy-env-action/commits?author=Aetherinox" title="Code">💻</a> <a href="#projectManagement-Aetherinox" title="Project Management">📆</a> <a href="#fundingFinding-Aetherinox" title="Funding Finding">🔍</a></td>
+            <td align="center" valign="top"><a href="https://gitlab.com/Aetherinox"><img src="https://avatars.githubusercontent.com/u/118329232?v=4?s=40" width="80px;" alt="Aetherinox"/><br /><sub><b>Aetherinox</b></sub></a><br /><a href="https://github.com/Aetherinox/gh-action-delete-deploy-env/commits?author=Aetherinox" title="Code">💻</a> <a href="#projectManagement-Aetherinox" title="Project Management">📆</a> <a href="#fundingFinding-Aetherinox" title="Funding Finding">🔍</a></td>
         </tr>
     </tbody>
 </table>
@@ -648,63 +579,63 @@ The following people have helped get this project going:
 <!-- BADGE > GENERAL -->
   [general-npmjs-uri]: https://npmjs.com
   [general-nodejs-uri]: https://nodejs.org
-  [general-npmtrends-uri]: http://npmtrends.com/delete-deploy-env-action
+  [general-npmtrends-uri]: http://npmtrends.com/gh-action-delete-deploy-env
 
 <!-- BADGE > VERSION > GITHUB -->
-  [github-version-img]: https://img.shields.io/github/v/tag/Aetherinox/delete-deploy-env-action?logo=GitHub&label=Version&color=ba5225
-  [github-version-uri]: https://github.com/Aetherinox/delete-deploy-env-action/releases
+  [github-version-img]: https://img.shields.io/github/v/tag/Aetherinox/gh-action-delete-deploy-env?logo=GitHub&label=Version&color=ba5225
+  [github-version-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/releases
 
 <!-- BADGE > VERSION > NPMJS -->
-  [npm-version-img]: https://img.shields.io/npm/v/delete-deploy-env-action?logo=npm&label=Version&color=ba5225
-  [npm-version-uri]: https://npmjs.com/package/delete-deploy-env-action
+  [npm-version-img]: https://img.shields.io/npm/v/gh-action-delete-deploy-env?logo=npm&label=Version&color=ba5225
+  [npm-version-uri]: https://npmjs.com/package/gh-action-delete-deploy-env
 
 <!-- BADGE > VERSION > PYPI -->
-  [pypi-version-img]: https://img.shields.io/pypi/v/delete-deploy-env-action-plugin
-  [pypi-version-uri]: https://pypi.org/project/delete-deploy-env-action-plugin/
+  [pypi-version-img]: https://img.shields.io/pypi/v/gh-action-delete-deploy-env-plugin
+  [pypi-version-uri]: https://pypi.org/project/gh-action-delete-deploy-env-plugin/
 
 <!-- BADGE > LICENSE > MIT -->
   [license-mit-img]: https://img.shields.io/badge/MIT-FFF?logo=creativecommons&logoColor=FFFFFF&label=License&color=9d29a0
-  [license-mit-uri]: https://github.com/Aetherinox/delete-deploy-env-action/blob/main/LICENSE
+  [license-mit-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/blob/main/LICENSE
 
 <!-- BADGE > GITHUB > DOWNLOAD COUNT -->
-  [github-downloads-img]: https://img.shields.io/github/downloads/Aetherinox/delete-deploy-env-action/total?logo=github&logoColor=FFFFFF&label=Downloads&color=376892
-  [github-downloads-uri]: https://github.com/Aetherinox/delete-deploy-env-action/releases
+  [github-downloads-img]: https://img.shields.io/github/downloads/Aetherinox/gh-action-delete-deploy-env/total?logo=github&logoColor=FFFFFF&label=Downloads&color=376892
+  [github-downloads-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/releases
 
 <!-- BADGE > NPMJS > DOWNLOAD COUNT -->
   [npmjs-downloads-img]: https://img.shields.io/npm/dw/%40aetherinox%2Fcsf-firewall?logo=npm&&label=Downloads&color=376892
-  [npmjs-downloads-uri]: https://npmjs.com/package/delete-deploy-env-action
+  [npmjs-downloads-uri]: https://npmjs.com/package/gh-action-delete-deploy-env
 
 <!-- BADGE > GITHUB > DOWNLOAD SIZE -->
-  [github-size-img]: https://img.shields.io/github/repo-size/Aetherinox/delete-deploy-env-action?logo=github&label=Size&color=59702a
-  [github-size-uri]: https://github.com/Aetherinox/delete-deploy-env-action/releases
+  [github-size-img]: https://img.shields.io/github/repo-size/Aetherinox/gh-action-delete-deploy-env?logo=github&label=Size&color=59702a
+  [github-size-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/releases
 
 <!-- BADGE > NPMJS > DOWNLOAD SIZE -->
-  [npmjs-size-img]: https://img.shields.io/npm/unpacked-size/delete-deploy-env-action/latest?logo=npm&label=Size&color=59702a
-  [npmjs-size-uri]: https://npmjs.com/package/delete-deploy-env-action
+  [npmjs-size-img]: https://img.shields.io/npm/unpacked-size/gh-action-delete-deploy-env/latest?logo=npm&label=Size&color=59702a
+  [npmjs-size-uri]: https://npmjs.com/package/gh-action-delete-deploy-env
 
 <!-- BADGE > CODECOV > COVERAGE -->
-  [codecov-coverage-img]: https://img.shields.io/codecov/c/github/Aetherinox/delete-deploy-env-action?token=MPAVASGIOG&logo=codecov&logoColor=FFFFFF&label=Coverage&color=354b9e
-  [codecov-coverage-uri]: https://codecov.io/github/Aetherinox/delete-deploy-env-action
+  [codecov-coverage-img]: https://img.shields.io/codecov/c/github/Aetherinox/gh-action-delete-deploy-env?token=MPAVASGIOG&logo=codecov&logoColor=FFFFFF&label=Coverage&color=354b9e
+  [codecov-coverage-uri]: https://codecov.io/github/Aetherinox/gh-action-delete-deploy-env
 
 <!-- BADGE > ALL CONTRIBUTORS -->
-  [contribs-all-img]: https://img.shields.io/github/all-contributors/Aetherinox/delete-deploy-env-action?logo=contributorcovenant&color=de1f6f&label=contributors
+  [contribs-all-img]: https://img.shields.io/github/all-contributors/Aetherinox/gh-action-delete-deploy-env?logo=contributorcovenant&color=de1f6f&label=contributors
   [contribs-all-uri]: https://github.com/all-contributors/all-contributors
 
 <!-- BADGE > GITHUB > BUILD > NPM -->
-  [github-build-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/delete-deploy-env-action/npm-release.yml?logo=github&logoColor=FFFFFF&label=Build&color=%23278b30
-  [github-build-uri]: https://github.com/Aetherinox/delete-deploy-env-action/actions/workflows/npm-release.yml
+  [github-build-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/gh-action-delete-deploy-env/npm-release.yml?logo=github&logoColor=FFFFFF&label=Build&color=%23278b30
+  [github-build-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/actions/workflows/npm-release.yml
 
 <!-- BADGE > GITHUB > BUILD > Pypi -->
-  [github-build-pypi-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/delete-deploy-env-action/release-pypi.yml?logo=github&logoColor=FFFFFF&label=Build&color=%23278b30
-  [github-build-pypi-uri]: https://github.com/Aetherinox/delete-deploy-env-action/actions/workflows/pypi-release.yml
+  [github-build-pypi-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/gh-action-delete-deploy-env/release-pypi.yml?logo=github&logoColor=FFFFFF&label=Build&color=%23278b30
+  [github-build-pypi-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/actions/workflows/pypi-release.yml
 
 <!-- BADGE > GITHUB > TESTS -->
-  [github-tests-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/delete-deploy-env-action/ci-tests.yml?logo=github&label=Tests&color=2c6488
-  [github-tests-uri]: https://github.com/Aetherinox/delete-deploy-env-action/actions/workflows/ci-tests.yml
+  [github-tests-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/gh-action-delete-deploy-env/npm-tests?logo=github&label=Tests&color=2c6488
+  [github-tests-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/actions/workflows/npm-tests
 
 <!-- BADGE > GITHUB > COMMIT -->
-  [github-commit-img]: https://img.shields.io/github/last-commit/Aetherinox/delete-deploy-env-action?logo=conventionalcommits&logoColor=FFFFFF&label=Last%20Commit&color=313131
-  [github-commit-uri]: https://github.com/Aetherinox/delete-deploy-env-action/commits/main/
+  [github-commit-img]: https://img.shields.io/github/last-commit/Aetherinox/gh-action-delete-deploy-env?logo=conventionalcommits&logoColor=FFFFFF&label=Last%20Commit&color=313131
+  [github-commit-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/commits/main/
 
 <!-- prettier-ignore-end -->
 <!-- markdownlint-restore -->
