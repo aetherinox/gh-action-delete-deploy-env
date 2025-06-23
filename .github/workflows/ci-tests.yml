@@ -1,12 +1,42 @@
 # #
-#   @parent         github workflow
-#   @desc           test build
-#   @author         Aetherinox
-#   @url            https://github.com/Aetherinox
+#   @type               github workflow
+#   @author             Aetherinox
+#   @url                https://github.com/Aetherinox
+#   @usage              run npm tests
+#
+#   @secrets            secrets.SELF_TOKEN                                          self github personal access token (fine-grained)
+#                       secrets.SELF_TOKEN_CL                                       self github personal access token (classic)
+#                       secrets.NPM_TOKEN                                           self npmjs access token
+#                       secrets.PYPI_API_TOKEN                                      self Pypi API token (production site) - https://pypi.org/
+#                       secrets.PYPI_API_TEST_TOKEN                                 self Pypi API token (test site) - https://test.pypi.org/
+#                       secrets.SELF_DOCKERHUB_TOKEN                                self Dockerhub token
+#                       secrets.CODECOV_TOKEN                                       codecov upload token for nodejs projects
+#                       secrets.MAXMIND_GELITE_TOKEN                                maxmind API token
+#                       secrets.CF_ACCOUNT_ID                                       cloudflare account id
+#                       secrets.CF_ACCOUNT_TOKEN                                    cloudflare account token
+#                       secrets.ORG_TOKEN                                           org github personal access token (fine-grained)
+#                       secrets.ORG_TOKEN_CL                                        org github personal access token (classic)
+#                       secrets.ORG_DOCKERHUB_TOKEN                                 org dockerhub secret
+#                       secrets.ORG_GITEA_TOKEN                                     org gitea personal access token (classic) with package:write permission
+#                       secrets.BOT_GPG_KEY_ASC                                     bot gpg private key (armored) | BEGIN PGP PRIVATE KEY BLOCK
+#                       secrets.BOT_GPG_KEY_B64                                     bot gpg private key (binary) converted to base64
+#                       secrets.BOT_GPG_PASSPHRASE                                  bot gpg private key passphrase
+#                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_RELEASES                discord webhook to report release notifications from github to discord
+#                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_WORKFLOWS               discord webhook to report workflow notifications from github to discord
+#                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_UPDATES                 discord webhook to report activity notifications from github to discord
+#
+#   @local              these workflows can be tested locally through the use of `act`
+#                           https://github.com/nektos/act
+#                       Extract act to folder
+#                       Add system env var with path to act.exe
+#                       Run the commands:
+#                           git pull https://github.com/username/repo
+#                           act -W .github/workflows/npm-tests.yml -P ubuntu-latest=catthehacker/ubuntu:full-22.04
+#                           act -W .github/workflows/npm-tests.yml -s TOKEN_CL=XXXXXXXXXX --pull=false
 # #
 
-run-name: "🌑 NPM › Tests"
-name: "☁️ NPM › Tests"
+run-name: '🌑 NPM › Tests'
+name: '☁️ NPM › Tests'
 
 # #
 #   triggers
@@ -15,10 +45,10 @@ name: "☁️ NPM › Tests"
 on:
   push:
       branches:
-          - "main"
+          - 'main'
   pull_request:
       branches:
-          - "main"
+          - 'main'
 
 # #
 #   environment variables
@@ -26,9 +56,7 @@ on:
 
 env:
     FOLDER_DIST:            'dist'
-    BOT_NAME_1:             AdminServ
-    BOT_NAME_2:             AdminServX
-    BOT_NAME_3:             EuropaServ
+    BOT_NAME:               BinaryServ
     BOT_NAME_DEPENDABOT:    dependabot[bot]
     GITHUB_TOKEN:           ${{ secrets.SELF_TOKEN_CL }}
     OWNER:                  ${{ github.repository_owner }}
@@ -51,8 +79,7 @@ jobs:
             #   [ CI ] Start
             # #
 
-            - name: "✅ Start"
-              id: task_npmtest_start
+            - name: '✅ Start'
               run: |
                   echo "Starting nightly reset"
 
@@ -60,8 +87,7 @@ jobs:
             #   [ CI ] Checkout
             # #
 
-            - name: "☑️ Checkout"
-              id: task_npmtest_checkout
+            - name: '☑️ Checkout'
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
@@ -70,8 +96,7 @@ jobs:
             #   [ CI ] Node Setup
             # #
 
-            - name: "⚙️ Setup › Node"
-              id: task_npmtest_node_setup
+            - name: '⚙️ Setup › Node'
               uses: actions/setup-node@v4
               with:
                   node-version: '20.x'
@@ -82,19 +107,18 @@ jobs:
             #   [ CI ] Node - Install
             # #
 
-            - name: "📦 NPM › Install"
-              id: task_npmtest_npm_install
+            - name: '📦 NPM › Install'
               run: |
                   npm install
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.SELF_TOKEN_CL }}
+                  NODE_AUTH_TOKEN: ${{ secrets.SELF_TOKEN }}
 
             # #
             #   Package Version > Set
             #   Get version from package.json VERSION value
             # #
 
-            - name: "👁️‍🗨️ Package Version › Get"
+            - name: '👁️‍🗨️ Package Version › Get'
               id: task_npmtest_package_version
               run: |
                   VER=$(cat package.json | jq -r '.version')
@@ -104,33 +128,22 @@ jobs:
             #   Package Version > Print (Debug)
             # #
 
-            - name: "👁️‍🗨️ Package Version › Print"
-              id: task_npmtest_package_version_debug
+            - name: '👁️‍🗨️ Package Version › Print'
               run: |
                   echo "VERSION: ${{ steps.task_initialize_package_version.outputs.PACKAGE_VERSION }}"
-
-            # #
-            #   [ CI ] Pretty
-            # #
-
-            #- name: "📦 NPM › Prettier"
-            #  id: task_npmtest_npm_prettier
-            #  run: npm run pretty:fix
 
             # #
             #   [ CI ] Lint
             # #
 
-            - name: "📦 NPM › Lint"
-              id: task_npmtest_npm_lint
+            - name: '📦 NPM › Lint'
               run: npm run lint
 
             # #
             #   Release > Execute npm generate so that a uuid and guid can be created
             # #
 
-            - name: "🪪 Generate IDs"
-              id: task_npmtest_npm_env_generate
+            - name: '🪪 Generate IDs'
               run: |
                   npm run root:generate
 
@@ -139,7 +152,7 @@ jobs:
             #   Get guid and uuid from env variable generated by npm
             # #
 
-            - name: "🪪 .ENV › Get"
+            - name: '🪪 .ENV › Get'
               id: task_npmtest_dotenv_get
               uses: falti/dotenv-action@v1
 
@@ -148,8 +161,7 @@ jobs:
             #   Show guid and uuid from env variable generated by npm
             # #
 
-            - name: "🪪 .ENV › Read"
-              id: task_npmtest_dotenv_print
+            - name: '🪪 .ENV › Read'
               run: |
                   echo "GUID: ${{ steps.task_npmtest_dotenv_get.outputs.GUID }}"
                   echo "UUID: ${{ steps.task_npmtest_dotenv_get.outputs.UUID }}"
@@ -158,8 +170,7 @@ jobs:
             #   [ CI ] Test
             # #
 
-            - name: "📦 NPM › Test"
-              id: task_npmtest_npm_test
+            - name: '📦 NPM › Test'
               run: npm run test
               env:
                   GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
@@ -168,8 +179,7 @@ jobs:
             #   [ CI ] Create Github Deployment
             # #
 
-            - name: "🔨 Create GitHub deployment"
-              id: task_npmtest_gh_deployment_create
+            - name: '🔨 Create GitHub deployment'
               uses: chrnorm/deployment-action@v2
               with:
                   token: ${{ env.GITHUB_TOKEN }}
@@ -180,8 +190,7 @@ jobs:
             #   [ CI ] Delete Github Deployment
             # #
 
-            - name: "🔨 Delete GitHub deployment"
-              id: task_npmtest_gh_deployment_delete
+            - name: '🔨 Delete GitHub deployment'
               uses: ./
               with:
                   token: ${{ env.GITHUB_TOKEN }}
