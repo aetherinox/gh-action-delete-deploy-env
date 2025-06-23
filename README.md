@@ -549,6 +549,7 @@ The following people have helped get this project going:
 
 <br />
 
+
 <div align="center">
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
@@ -630,8 +631,8 @@ The following people have helped get this project going:
   [github-build-pypi-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/actions/workflows/pypi-release.yml
 
 <!-- BADGE > GITHUB > TESTS -->
-  [github-tests-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/gh-action-delete-deploy-env/npm-tests?logo=github&label=Tests&color=2c6488
-  [github-tests-uri]: https://github.com/Aetherinox/gh-action-delete-deploy-env/actions/workflows/npm-tests
+  [github-tests-img]: https://img.shields.io/github/actions/workflow/status/Aetherinox/gh-action-delete-deploy-env/npm-tests.yml?logo=github&label=Tests&color=2c6488
+  [github-tests-uri]: https://github.com/aetherinox/gh-action-delete-deploy-env/actions/workflows/npm-tests.yml
 
 <!-- BADGE > GITHUB > COMMIT -->
   [github-commit-img]: https://img.shields.io/github/last-commit/Aetherinox/gh-action-delete-deploy-env?logo=conventionalcommits&logoColor=FFFFFF&label=Last%20Commit&color=313131
