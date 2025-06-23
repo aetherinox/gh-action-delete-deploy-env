@@ -26,7 +26,7 @@
 #                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_RELEASES                discord webhook to report release notifications from github to discord
 #                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_WORKFLOWS               discord webhook to report workflow notifications from github to discord
 #                       secrets.DISCORD_WEBHOOK_CHAN_GITHUB_UPDATES                 discord webhook to report activity notifications from github to discord
-#   
+#
 #
 #   @local              these workflows can be tested locally through the use of `act`
 #                           https://github.com/nektos/act
@@ -58,7 +58,7 @@ on:
 
             # #
             #   Deployment Environment Name
-            #   
+            #
             #   this is the name of the deployment item
             # #
 
@@ -231,7 +231,7 @@ jobs:
 
             - name: >-
                 ⚙️ Deployments › Clean
-              uses: Aetherinox/delete-deploy-env-action@v3
+              uses: aetherinox/gh-action-delete-deploy-env@v3
               with:
                   token: ${{ secrets.SELF_TOKEN_CL }}
                   environment: '${{ env.DEPLOYMENT_ENV }}'
