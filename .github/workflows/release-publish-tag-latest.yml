@@ -18,11 +18,11 @@
 #                           cleanup:
 #                               runs-on: ubuntu-latest
 #                               permissions: write-all
-#                       
+#
 #                               steps:
 #                                   - name: >-
 #                                       ⚙️ Deployments › Clean
-#                                   uses: Aetherinox/delete-deploy-env-action@v3.0.0
+#                                   uses: Aetherinox/gh-action-delete-deploy-env@v3.0.0
 #                                   with:
 #                                       token: ${{ secrets.SELF_TOKEN_CL }}
 #                                       environment: orion
@@ -34,7 +34,7 @@
 #                               steps:
 #                                   - name: >-
 #                                       ⚙️ Deployments › Clean
-#                                   uses: Aetherinox/delete-deploy-env-action@latest
+#                                   uses: Aetherinox/gh-action-delete-deploy-env@latest
 #
 #                       grabs the latest version of your github release, and creates an additional tag called @latest
 #                       useful for projects that involve creating github workflows that others can use.
@@ -42,18 +42,18 @@
 #   @url                https://github.com/Aetherinox
 # #
 
-name: "📦 Release › Create @latest Tag"
-run-name: "📦 Release › Create @latest Tag"
+name: '📦 Release › Create @latest Tag'
+run-name: '📦 Release › Create @latest Tag'
 
 # #
 #   Triggers
 # #
 
 on:
-  release:
-    types:
-      - published
-      - edited
+    release:
+        types:
+            - published
+            - edited
 
 # #
 #   Jobs
@@ -71,7 +71,6 @@ jobs:
             # #
 
             - name: '☑️ Checkout'
-              id: task_cloudflare_checkout
               uses: actions/checkout@v4
 
             # #
@@ -83,12 +82,12 @@ jobs:
             #   this is useful for projects like Github Workflows, because it allows a user to use
             #   your github workflow and specify the @latest tag at the end of the workflow path.
             #
-            #       https://github.com/Aetherinox/delete-deploy-env-action
+            #       https://github.com/Aetherinox/gh-action-delete-deploy-env
             #
             #       - name: "☁️ Publish to Cloudflare Pages"
             #         id: task_publish_push
-            #         uses: aetherinox/delete-deploy-env-action@latest
-            #                                                   ^^^^^^
+            #         uses: aetherinox/gh-action-delete-deploy-env@latest
+            #                                                      ^^^^^^
             # #
 
             - name: '🏷️ Update @latest build'

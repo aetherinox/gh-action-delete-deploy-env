@@ -1,5 +1,5 @@
 {
-    "projectName": "delete-deploy-env-action",
+    "projectName": "gh-action-delete-deploy-env",
     "projectOwner": "Aetherinox",
     "repoType": "github",
     "repoHost": "https://github.com",
