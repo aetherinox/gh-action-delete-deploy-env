@@ -66,7 +66,7 @@
         "@aetherinox/noxenv": "^1.1.1",
         "@octokit/core": "^5.2.1",
         "@octokit/request-error": "^7.0.0",
-        "@octokit/types": "^10.0.0",
+        "@octokit/types": "^14.1.0",
         "@types/node": "^20.11.10",
         "typescript-eslint": "^8.35.0",
         "@typescript-eslint/parser": "^8.34.1",
