@@ -68,7 +68,7 @@
         "@octokit/request-error": "^7.0.0",
         "@octokit/types": "^10.0.0",
         "@types/node": "^20.11.10",
-        "typescript-eslint": "^8.34.1",
+        "typescript-eslint": "^8.35.0",
         "@typescript-eslint/parser": "^8.34.1",
         "@typescript-eslint/eslint-plugin": "^8.34.1",
         "eslint": "^9.29.0",
