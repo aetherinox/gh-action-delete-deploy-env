@@ -75,7 +75,7 @@
         "eslint-config-love": "^121.0.0",
         "eslint-plugin-escompat": "^3.11.4",
         "eslint-plugin-github": "^6.0.0",
-        "@stylistic/eslint-plugin": "^4.4.1",
+        "@stylistic/eslint-plugin": "^5.0.0",
         "@vercel/ncc": "^0.38.3",
         "ava": "^6.4.0",
         "husky": "^9.1.7",
