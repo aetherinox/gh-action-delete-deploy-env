@@ -64,7 +64,7 @@
         "@types/uuid": "^10.0.0",
         "uuid": "^11.1.0",
         "@aetherinox/noxenv": "^1.1.1",
-        "@octokit/core": "^5.2.1",
+        "@octokit/core": "^7.0.3",
         "@octokit/request-error": "^7.0.0",
         "@octokit/types": "^10.0.0",
         "@types/node": "^20.11.10",
